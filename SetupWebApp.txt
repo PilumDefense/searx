@@ -1,0 +1,81 @@
+https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
+
+
+sudo apt-get update
+sudo apt-get install apache2
+
+
+ifconfig enp0s3 | grep inet | awk '{ print $2 }'
+
+
+sudo apt-get install mysql-server 
+sudo apt-get install  libapache2-mod-auth-mysql php5-mysql
+
+sudo apt-get install libapache2-mod-wsgi python-dev
+sudo a2enmod wsgi 
+
+
+# Create searx in /var/www/ directory
+cd /var/www/
+sudo git clone https://github.com/PilumDefense/searx
+
+# Upgrade pip 
+pip install --upgrade pip
+
+# Create virtual enviroment for searx
+sudo virtualenv searx
+
+source searx/bin/activate 
+
+sudo -H pip install Flask
+sudo -H pip install requests
+deactivate
+
+sudo vi /etc/apache2/sites-available/searx.conf
+
+<VirtualHost *:80>
+		ServerName pilumsearch.com
+		ServerAdmin tkemper@pilumdefense.com
+		WSGIScriptAlias / /var/www/searx/searx.wsgi
+		<Directory /var/www/searx/searx/>
+			Order allow,deny
+			Allow from all
+		</Directory>
+		Alias /static /var/www/searx/searx/static
+		<Directory /var/www/searx/searx/static/>
+			Order allow,deny
+			Allow from all
+		</Directory>
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		LogLevel warn
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+sudo a2ensite searx
+
+
+cd /var/www/searx
+
+sudo vi searx.wsgi
+
+
+
+#!/usr/bin/python
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/searx/")
+
+from FlaskApp import app as application
+application.secret_key = 'Add your secret key'
+
+
+sudo a2ensite searx
+
+sudo service apache2 restart 
+
+sudo service apache2 reload
+
+
+
