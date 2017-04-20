@@ -1,0 +1,11 @@
+- Open "Anaconda Prompt"
+
+ - Type in:
+
+cd Software\searx\searx
+python webapp.py
+
+- Open web browser to
+
+http://127.0.0.1:8888/
+
