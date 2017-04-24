@@ -8,7 +8,7 @@ search:
     language : "all"
 
 server:
-    port : 8888
+    port : 5000
     bind_address : "127.0.0.1" # address to listen on
     secret_key : "9483uqf48uo3u" # change this!
     base_url : False # Set custom base_url. Possible values: False or "https://your.custom.host/location/"

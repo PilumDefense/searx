@@ -1,0 +1,20 @@
+
+
+<VirtualHost *:80>
+		ServerName 10.1.10.223
+		ServerAdmin tkemper@pilumdefense.com
+		WSGIScriptAlias / /var/www/searx/searx.wsgi
+		<Directory /var/www/searx/searx/>
+			Order allow,deny
+			Allow from all
+		</Directory>
+		Alias /static /var/www/searx/searx/static
+		<Directory /var/www/searx/searx/static/>
+			Order allow,deny
+			Allow from all
+		</Directory>
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		LogLevel warn
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
